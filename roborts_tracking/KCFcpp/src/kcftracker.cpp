@@ -403,7 +403,11 @@ cv::Mat KCFTracker::getFeatures(const cv::Mat & image, bool inithann, float scal
 
     // HOG features
     if (_hogfeatures) {
+#if CV_VERSION_MAJOR  == 3 && CV_VERSION_MINOR <= 2
+        IplImage z_ipl = z;
+#else
         IplImage z_ipl = cvIplImage(z);
+#endif
         CvLSVMFeatureMapCaskade *map;
         getFeatureMaps(&z_ipl, cell_size, &map);
         normalizeAndTruncate(map,0.2f);
